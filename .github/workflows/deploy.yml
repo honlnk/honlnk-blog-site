@@ -27,7 +27,7 @@ jobs:
     steps:
       # 1. 拉取框架仓（Quartz 配置与布局）
       - name: Checkout framework repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # 保留完整 git 历史，供 created-modified-date 插件用
 
@@ -36,7 +36,7 @@ jobs:
         run: rm -rf content
 
       - name: Checkout notes repo into content/
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: honlnk/honlnk-blog # 数据源：Obsidian 笔记仓
           ref: master
@@ -45,7 +45,7 @@ jobs:
 
       # 3. 构建
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
 
@@ -53,7 +53,7 @@ jobs:
         run: npm ci
 
       - name: Cache Quartz plugins
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .quartz/plugins
           key: quartz-plugins-${{ hashFiles('quartz.lock.json') }}
@@ -70,7 +70,7 @@ jobs:
         run: echo "blog.honlnk.com" > public/CNAME
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: public
 
@@ -83,4 +83,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
