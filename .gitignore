@@ -11,3 +11,8 @@ private/
 replit.nix
 .quartz/
 quartz/cli/tui/dist/
+
+# content/ 由 CI 从 honlnk/honlnk-blog 仓库动态拉取，不纳入本仓库
+# 保留目录占位，忽略其中所有文件
+content/*
+!content/.gitkeep

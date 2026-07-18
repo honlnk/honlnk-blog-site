@@ -1,0 +1,86 @@
+name: Deploy blog to GitHub Pages
+
+on:
+  # 框架仓自身（配置/布局/插件）改动时触发
+  push:
+    branches:
+      - v5
+  # 笔记仓 honlnk-blog 推送后，通过 repository_dispatch 触发本工作流（近实时联动）
+  repository_dispatch:
+    types:
+      - notes-updated
+  # 手动触发
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取框架仓（Quartz 配置与布局）
+      - name: Checkout framework repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 保留完整 git 历史，供 created-modified-date 插件用
+
+      # 2. 清空占位 content/，再拉取最新笔记仓作为内容源
+      - name: Clear placeholder content
+        run: rm -rf content
+
+      - name: Checkout notes repo into content/
+        uses: actions/checkout@v4
+        with:
+          repository: honlnk/honlnk-blog # 数据源：Obsidian 笔记仓
+          ref: master
+          path: content
+          fetch-depth: 0 # 保留笔记的 git 历史，让"最后修改时间"准确
+
+      # 3. 构建
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Quartz plugins
+        uses: actions/cache@v4
+        with:
+          path: .quartz/plugins
+          key: quartz-plugins-${{ hashFiles('quartz.lock.json') }}
+
+      # 按 quartz.lock.json 锁定的版本安装社区插件（不联网拉 latest，避免回归）
+      - name: Install Quartz plugins
+        run: npx quartz plugin install --from-config
+
+      - name: Build Quartz
+        run: npx quartz build
+
+      # 4. 写入自定义域名（每次构建兜底，防止 Pages 设置丢失）
+      - name: Write CNAME
+        run: echo "blog.honlnk.com" > public/CNAME
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
