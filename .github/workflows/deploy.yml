@@ -7,6 +7,11 @@ on:
     types: [notes-updated]
   workflow_dispatch:
 
+# 主题来源：saberzero1/quartz-themes（Obsidian 主题的 Quartz 移植版）
+# 可选主题见 https://github.com/saberzero1/quartz-themes/tree/master/themes
+env:
+  THEME_NAME: typewriter
+
 permissions:
   contents: read
   pages: write
@@ -54,6 +59,13 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
+
+      # 5. 注入社区主题（saberzero1/quartz-themes）
+      #    脚本会拉取对应主题的 SCSS 到 quartz/styles/themes/，
+      #    并在 custom.scss 里追加 @use "./themes";
+      - name: Fetch Quartz Theme
+        run: curl -s -S https://raw.githubusercontent.com/saberzero1/quartz-themes/master/action.sh | bash -s -- $THEME_NAME
+
       - uses: actions/cache@v6
         with:
           path: .quartz/plugins
@@ -61,7 +73,7 @@ jobs:
       - run: npx quartz plugin install --from-config
       - run: npx quartz build
 
-      # 5. 写入自定义域名
+      # 6. 写入自定义域名
       #    有自定义域名：把 <你的域名> 换成实际域名（如 blog.example.com），保留这行
       #    无自定义域名：删掉这行（用 <用户名>.github.io/<框架仓> 默认地址）
       - run: echo "blog.honlnk.com" > public/CNAME
