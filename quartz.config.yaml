@@ -22,30 +22,30 @@ configuration:
     fontOrigin: googleFonts
     cdnCaching: true
     typography:
-      header: Noto Sans SC
-      body: Noto Serif SC
+      header: Schibsted Grotesk
+      body: Source Sans Pro
       code: IBM Plex Mono
     colors:
       lightMode:
-        light: "#fbf9f4"
-        lightgray: "#e8e2d6"
-        gray: "#c4bba8"
-        darkgray: "#3d3528"
-        dark: "#1f1a12"
-        secondary: "#92400e"
-        tertiary: "#7c8471"
-        highlight: rgba(146, 64, 14, 0.08)
-        textHighlight: "#fde68a88"
+        light: "#faf8f8"
+        lightgray: "#e5e5e5"
+        gray: "#b8b8b8"
+        darkgray: "#4e4e4e"
+        dark: "#2b2b2b"
+        secondary: "#284b63"
+        tertiary: "#84a59d"
+        highlight: rgba(143, 159, 169, 0.15)
+        textHighlight: "#fff23688"
       darkMode:
-        light: "#1c1a17"
-        lightgray: "#3a352e"
-        gray: "#5c5448"
-        darkgray: "#d4cfc2"
-        dark: "#ebe6da"
-        secondary: "#d97706"
-        tertiary: "#9ca58e"
-        highlight: rgba(217, 119, 6, 0.12)
-        textHighlight: "#92660a88"
+        light: "#161618"
+        lightgray: "#393639"
+        gray: "#646464"
+        darkgray: "#d4d4d4"
+        dark: "#ebebec"
+        secondary: "#7b97aa"
+        tertiary: "#84a59d"
+        highlight: rgba(143, 159, 169, 0.15)
+        textHighlight: "#b3aa0288"
 plugins:
   - source: github:quartz-community/created-modified-date
     enabled: true
@@ -106,6 +106,14 @@ plugins:
     order: 92
   - source: github:quartz-community/fonts
     enabled: true
+  - source:
+      name: quartz-themes
+      repo: github:saberzero1/quartz-themes
+      subdir: plugin
+    enabled: true
+    options:
+      theme: typewriter
+      variation: null
   - source: github:quartz-community/remove-draft
     enabled: true
   - source: github:quartz-community/explicit-publish

@@ -247,6 +247,17 @@
       "commit": "6984305e5dae0830c025450e160f12610406f7a4",
       "installedAt": "2026-07-18T19:17:48.684Z"
     },
+    "quartz-themes": {
+      "source": {
+        "name": "quartz-themes",
+        "repo": "github:saberzero1/quartz-themes",
+        "subdir": "plugin"
+      },
+      "resolved": "https://github.com/saberzero1/quartz-themes.git",
+      "commit": "945135e8b70576753d0591e1713fe56553100b3d",
+      "subdir": "plugin",
+      "installedAt": "2026-06-11T16:00:34.627Z"
+    },
     "tag-list": {
       "source": "github:quartz-community/tag-list",
       "resolved": "https://github.com/quartz-community/tag-list.git",
