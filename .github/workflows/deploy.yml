@@ -31,9 +31,9 @@ jobs:
       #    下一步还原笔记修改时间需要完整 git 历史
       - name: Update notes submodule to latest
         run: |
-          git -C content/notes fetch --unshallow origin master 2>/dev/null \
-            || git -C content/notes fetch origin master
-          git -C content/notes checkout origin/master
+          git -C content fetch --unshallow origin master 2>/dev/null \
+            || git -C content fetch origin master
+          git -C content checkout origin/master
 
       # 3. 按笔记的 git 提交时间还原文件 mtime
       #    actions/checkout 会把所有文件 mtime 重置为 checkout 时刻，
@@ -41,7 +41,7 @@ jobs:
       #    这里遍历每个文件，用它的 git 最后提交时间覆盖回去。
       - name: Restore notes mtime from git history
         run: |
-          cd content/notes
+          cd content
           git ls-files -z | while IFS= read -r -d '' f; do
             mtime=$(git log -1 --format='%ct' "$f" 2>/dev/null)
             if [ -n "$mtime" ]; then
