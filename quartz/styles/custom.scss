@@ -1,1 +1,39 @@
 @use "./variables.scss" as *;
+
+// Keep scrollbars subtle and consistent with the active Quartz theme,
+// especially on Windows where the native scrollbar is visually prominent.
+* {
+  scrollbar-color: var(--scrollbar-thumb-bg, color-mix(in srgb, var(--darkgray) 24%, transparent))
+    var(--scrollbar-bg, transparent);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: var(--scrollbar-width, 10px);
+  height: var(--scrollbar-height, 10px);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-bg, transparent);
+}
+
+::-webkit-scrollbar-thumb {
+  min-width: 32px;
+  min-height: 32px;
+  background-color: var(--scrollbar-thumb-bg, color-mix(in srgb, var(--darkgray) 24%, transparent));
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: var(--scrollbar-radius, 999px);
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: var(
+    --scrollbar-active-thumb-bg,
+    color-mix(in srgb, var(--darkgray) 42%, transparent)
+  );
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
